@@ -5,7 +5,7 @@ import 'package:zadatci_app/zadatak.dart';
 void main() {
   const tekst = '''
   [
-    {"id": 1, "naslov": "Instalacija", "zavrsen": true},
+    {"id": 1, "naslov": "Instalacija", "zavrsen": true, "opis": "Instalirati Dart"},
     {"id": 2, "naslov": "Git"},
     {"id": 3, "naslov": "Dart", "zavrsen": false}
   ]''';
@@ -18,5 +18,7 @@ void main() {
   print('Drugi je zavrsen: ${lista[1].zavrsen}');
   print(jsonEncode(lista.first.toJson()));
   print(lista[1].kopiraj(zavrsen: true).zavrsen);
+  print(lista[0].opis);
+  print(lista[1].opis);
 
 }
