@@ -1,4 +1,3 @@
-
 class Zadatak {
   final int id;
   final String naslov;
@@ -26,11 +25,7 @@ class Zadatak {
     'opis': opis,
   };
 
-  Zadatak kopiraj({
-    String? naslov,
-    bool? zavrsen,
-    String? opis,
-  }) => Zadatak(
+  Zadatak kopiraj({String? naslov, bool? zavrsen, String? opis}) => Zadatak(
     id: id,
     naslov: naslov ?? this.naslov,
     zavrsen: zavrsen ?? this.zavrsen,

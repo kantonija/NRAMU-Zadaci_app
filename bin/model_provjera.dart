@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 import 'dart:convert';
+
 import 'package:zadatci_app/zadatak.dart';
 
 void main() {
@@ -11,14 +12,13 @@ void main() {
   ]''';
 
   final lista = (jsonDecode(tekst) as List)
-    .map((e) => Zadatak.fromJson(e as Map<String, dynamic>))
-    .toList();
-  
+      .map((e) => Zadatak.fromJson(e as Map<String, dynamic>))
+      .toList();
+
   print('Zadataka: ${lista.length}');
   print('Drugi je zavrsen: ${lista[1].zavrsen}');
   print(jsonEncode(lista.first.toJson()));
   print(lista[1].kopiraj(zavrsen: true).zavrsen);
   print(lista[0].opis);
   print(lista[1].opis);
-
 }
