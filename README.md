@@ -36,3 +36,7 @@ U ovom kodu spremanje zatvara zaslon s `Navigator.pop(context, zadatak)`, pa `pu
 ### Provjera razumijevanja 2
 
 Nakon `await Navigator.push(...)` provjerava se `mounted` jer se tijekom čekanja korisnik mogao udaljiti sa zaslona koji je otvorio obrazac. Ako se to dogodilo, njegov `State` više nije aktivan i ne smije se pozivati `setState` niti koristiti njegov `context`. Uvjet `if (!mounted || novi == null) return;` ujedno prekida obradu ako je korisnik odustao i nije vraćen zadatak.
+
+### Dodane izmjene u M1
+
+U izmjenama M1, nadodan je u naslov prikaz broja zadataka u listi. Također, nadodan je i gumb Odustani u formi koji vraća na prethodnu, home stranicu bez mijenjenjanja prethodnih zadataka i nadodavanja novih zadataka.

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'forma_ekran.dart';
 import 'repozitorij.dart';
 import 'zadatak.dart';
+
 void main() => runApp(const ZadatciApp());
+
 class ZadatciApp extends StatelessWidget {
   const ZadatciApp({super.key});
   @override
@@ -18,11 +21,13 @@ class ZadatciApp extends StatelessWidget {
     );
   }
 }
+
 class ZadatciEkran extends StatefulWidget {
   const ZadatciEkran({super.key});
   @override
   State<ZadatciEkran> createState() => _ZadatciEkranState();
 }
+
 class _ZadatciEkranState extends State<ZadatciEkran> {
   final _repo = ZadatakRepozitorij();
   final List<Zadatak> _zadaci = [];
@@ -35,11 +40,13 @@ class _ZadatciEkranState extends State<ZadatciEkran> {
       ..clear()
       ..addAll(podaci);
   }
+
   void _ponovi() {
     setState(() {
       _ucitavanje = _ucitaj();
     });
   }
+
   Future<void> _dodaj() async {
     final novi = await Navigator.push<Zadatak>(
       context,
@@ -47,10 +54,10 @@ class _ZadatciEkranState extends State<ZadatciEkran> {
     );
     if (!mounted || novi == null) return;
     setState(() => _zadaci.add(novi));
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Dodano: ${novi.naslov}')));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Dodano: ${novi.naslov}')));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

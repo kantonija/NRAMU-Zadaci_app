@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'zadatak.dart';
+
 class FormaEkran extends StatefulWidget {
   /// Postojeći zadatci, potrebni za provjeru duplikata i dodjelu id-a.
   final List<Zadatak> postojeci;
@@ -7,6 +9,7 @@ class FormaEkran extends StatefulWidget {
   @override
   State<FormaEkran> createState() => _FormaEkranState();
 }
+
 class _FormaEkranState extends State<FormaEkran> {
   final _kljuc = GlobalKey<FormState>();
   final _naslov = TextEditingController();
@@ -16,12 +19,14 @@ class _FormaEkranState extends State<FormaEkran> {
     _naslov.dispose();
     super.dispose();
   }
+
   String? _provjeriNaslov(String? vrijednost) {
     final tekst = vrijednost?.trim() ?? '';
     if (tekst.isEmpty) return 'Unesite naslov';
     if (tekst.length < 3) return 'Naslov mora imati najmanje 3 znaka';
     return null;
   }
+
   void _spremi() {
     if (!_kljuc.currentState!.validate()) return;
     final noviId =
@@ -37,9 +42,11 @@ class _FormaEkranState extends State<FormaEkran> {
     );
     Navigator.pop(context, zadatak);
   }
+
   void _odustani() {
     Navigator.pop(context);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +59,7 @@ class _FormaEkranState extends State<FormaEkran> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                 controller: _naslov,
+                controller: _naslov,
                 decoration: const InputDecoration(
                   labelText: 'Naslov',
                   border: OutlineInputBorder(),
