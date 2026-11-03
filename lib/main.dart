@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'forma_ekran.dart';
 import 'repozitorij.dart';
 import 'zadatak.dart';
-
 void main() => runApp(const ZadatciApp());
-
 class ZadatciApp extends StatelessWidget {
   const ZadatciApp({super.key});
   @override
@@ -13,61 +11,59 @@ class ZadatciApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Zadatci',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor:  Colors.deepOrange),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
       home: const ZadatciEkran(),
     );
   }
 }
-
 class ZadatciEkran extends StatefulWidget {
   const ZadatciEkran({super.key});
-
   @override
   State<ZadatciEkran> createState() => _ZadatciEkranState();
 }
-
 class _ZadatciEkranState extends State<ZadatciEkran> {
-  // Promijenite parametre da isprobate sva stanja:
-  // neuspjeha: 1 -> prvi dohvat padne, ponovni pokušaj uspije
-  // prazno: true -> poslužitelj vraća prazan popis
-  // prvi dohvat pada, ponovni pokušaj uspijeva
-  final _repo = ZadatakRepozitorij(neuspjeha: 0, prazno: false);
-
-  late Future<List<Zadatak>> _buduci = _repo.dohvati();
-
+  final _repo = ZadatakRepozitorij();
+  final List<Zadatak> _zadaci = [];
+  late Future<void> _ucitavanje = _ucitaj();
+  Future<void> _ucitaj() async {
+    final podaci = await _repo.dohvati();
+    _zadaci
+      ..clear()
+      ..addAll(podaci);
+  }
   void _ponovi() {
     setState(() {
-      _buduci = _repo.dohvati();
+      _ucitavanje = _ucitaj();
     });
   }
-
-  Future<void> _osvjezi() async {
-    setState(() {
-      _buduci = _repo.dohvati();
-    });
-    try {
-      await _buduci;
-    } catch (_) {}
+  Future<void> _dodaj() async {
+    final novi = await Navigator.push<Zadatak>(
+      context,
+      MaterialPageRoute(builder: (_) => FormaEkran(postojeci: _zadaci)),
+    );
+    if (!mounted || novi == null) return;
+    setState(() => _zadaci.add(novi));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Dodano: ${novi.naslov}')));
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Zadatci')),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: _dodaj,
         tooltip: 'Novi zadatak',
         child: const Icon(Icons.add),
       ),
-      body: FutureBuilder<List<Zadatak>>(
-        future: _buduci,
+      body: FutureBuilder<void>(
+        future: _ucitavanje,
         builder: (context, snap) {
-          if (snap.connectionState != ConnectionState.done && !snap.hasData) {
+          if (snap.connectionState != ConnectionState.done) {
             return const Center(child: CircularProgressIndicator());
           }
-
           if (snap.hasError) {
             return Center(
               child: Column(
@@ -75,11 +71,7 @@ class _ZadatciEkranState extends State<ZadatciEkran> {
                 children: [
                   const Icon(Icons.error_outline, size: 48, color: Colors.red),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Zadatke trenutno nije moguće dohvatiti. '
-                    'Pokušajte ponovno.',
-                    textAlign: TextAlign.center,
-                  ),
+                  Text('${snap.error}'),
                   const SizedBox(height: 8),
                   FilledButton(
                     onPressed: _ponovi,
@@ -89,49 +81,25 @@ class _ZadatciEkranState extends State<ZadatciEkran> {
               ),
             );
           }
-
-          final zadaci = snap.data!;
-
-          if (zadaci.isEmpty) {
+          if (_zadaci.isEmpty) {
             return const Center(child: Text('Nema zadataka'));
           }
-
-          final zavrseno = zadaci.where((z) => z.zavrsen).length;
-
-          return Column(
-            children: [
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: _osvjezi,
-                  child: ListView.builder(
-                    itemCount: zadaci.length,
-                    itemBuilder: (context, i) {
-                      final z = zadaci[i];
-
-                      return ListTile(
-                        leading: Icon(
-                          z.zavrsen
-                              ? Icons.check_circle
-                              : Icons.radio_button_unchecked,
-                        ),
-                        title: Text(
-                          z.naslov,
-                          style: TextStyle(
-                            decoration: z.zavrsen
-                                ? TextDecoration.lineThrough
-                                : null,
-                          ),
-                        ),
-                      );
-                    },
+          return ListView.builder(
+            itemCount: _zadaci.length,
+            itemBuilder: (context, i) {
+              final z = _zadaci[i];
+              return ListTile(
+                leading: Icon(
+                  z.zavrsen ? Icons.check_circle : Icons.radio_button_unchecked,
+                ),
+                title: Text(
+                  z.naslov,
+                  style: TextStyle(
+                    decoration: z.zavrsen ? TextDecoration.lineThrough : null,
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text('Završeno: $zavrseno od ${zadaci.length}'),
-              ),
-            ],
+              );
+            },
           );
         },
       ),
