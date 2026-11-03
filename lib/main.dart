@@ -7,13 +7,16 @@ void main() => runApp(const ZadatciApp());
 
 class ZadatciApp extends StatelessWidget {
   const ZadatciApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Zadatci',
-      home: ZadatciEkran(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor:  Colors.deepOrange),
+        useMaterial3: true,
+      ),
+      home: const ZadatciEkran(),
     );
   }
 }
@@ -53,6 +56,11 @@ class _ZadatciEkranState extends State<ZadatciEkran> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Zadatci')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Novi zadatak',
+        child: const Icon(Icons.add),
+      ),
       body: FutureBuilder<List<Zadatak>>(
         future: _buduci,
         builder: (context, snap) {

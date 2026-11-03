@@ -22,3 +22,7 @@ Ako `Future` završi greškom, a mi tu grešku nigdje ne uhvatimo, ona se samo "
  
 Future se stvara u polju jer Flutter poziva `build` puno puta (npr. kod svakog `setState`), pa bi se dohvat svaki put pokrenuo ispočetka i opet bi se pojavio spinner. U polju se dohvat pokrene samo jednom, a novi samo kad to namjerno zatražimo. Svaki zaslon s podacima mora prikazati tri stanja: učitavanje (spinner), grešku (poruka i gumb za ponovni pokušaj) i prazan popis (poruka "Nema zadataka").
  
+
+### Vjezba 03
+
+Bolje je zadati boju u temi nego na svakom widgetu zbog lakšeg održavanja, dosljednosti dizajna, boja i widgeta, boljoj podršci za Dark Mode te najbitnije, čistiji i čitljivi kod.
