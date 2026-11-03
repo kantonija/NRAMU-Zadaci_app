@@ -37,6 +37,9 @@ class _FormaEkranState extends State<FormaEkran> {
     );
     Navigator.pop(context, zadatak);
   }
+  void _odustani() {
+    Navigator.pop(context);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +70,12 @@ class _FormaEkranState extends State<FormaEkran> {
               ),
               const SizedBox(height: 8),
               FilledButton(onPressed: _spremi, child: const Text('Spremi')),
+              const SizedBox(height: 8),
+              FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: _odustani,
+                child: const Text('Odustani'),
+              ),
             ],
           ),
         ),
