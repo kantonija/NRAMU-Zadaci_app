@@ -40,3 +40,13 @@ Nakon `await Navigator.push(...)` provjerava se `mounted` jer se tijekom čekanj
 ### Dodane izmjene u M1
 
 U izmjenama M1, nadodan je u naslov prikaz broja zadataka u listi. Također, nadodan je i gumb Odustani u formi koji vraća na prethodnu, home stranicu bez mijenjenjanja prethodnih zadataka i nadodavanja novih zadataka.
+
+### Vjezba 04
+
+### Provjera razumijevanja 1
+
+Tri stvari koje u vježbi 3 radi ekran, a ne pripadaju njegovoj ulozi prikaza:
+
+1. Ekran upravlja popisom zadataka i stanjem učitavanja (`_zadaci`, `_ucitavanje`, `_ucitaj` i `_ponovi`). To pripada **ViewModelu**, koji bi izlagao podatke i stanja prikazu.
+2. Obrazac računa novi ID i sastavlja novi `Zadatak` u `_spremi`. To je poslovna logika i pripada **ViewModelu**; prikaz bi samo proslijedio korisnički unos.
+3. Obrazac provjerava pravila naslova u `_provjeriNaslov` (obavezno polje i najmanje tri znaka). Ta pravila pripadaju **ViewModelu** ili zasebnom validatoru u sloju domene, a ne widgetu.
