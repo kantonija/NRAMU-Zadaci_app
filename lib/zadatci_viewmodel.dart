@@ -15,10 +15,20 @@ class ZadatciViewModel extends ChangeNotifier {
   final List<Zadatak> _zadatci = [];
   Stanje _stanje = Stanje.ucitavanje;
   String _poruka = '';
+  bool _samoNezavrseni = false;
   
   UnmodifiableListView<Zadatak> get zadatci => UnmodifiableListView(_zadatci);
+  UnmodifiableListView<Zadatak> get prikazani => UnmodifiableListView(
+        _samoNezavrseni ? _zadatci.where((z) => !z.zavrsen).toList() : _zadatci,
+      );
   Stanje get stanje => _stanje;
   String get poruka => _poruka;
+  bool get samoNezavrseni => _samoNezavrseni;
+  set samoNezavrseni(bool vrijednost) {
+    if (_samoNezavrseni == vrijednost) return;
+    _samoNezavrseni = vrijednost;
+    notifyListeners();
+  }
   
   int get ukupno => _zadatci.length;
   int get zavrseno => _zadatci.where((z) => z.zavrsen).length;
@@ -55,6 +65,12 @@ class ZadatciViewModel extends ChangeNotifier {
     final i = _zadatci.indexWhere((z) => z.id == id);
     if (i == -1) return;
     _zadatci[i] = _zadatci[i].kopiraj(zavrsen: !_zadatci[i].zavrsen);
+  }
+
+  void ukloni(int id) {
+    final i = _zadatci.indexWhere((z) => z.id == id);
+    if (i == -1) return;
+    _zadatci.removeAt(i);
     notifyListeners();
   }
 }

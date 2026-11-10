@@ -54,3 +54,11 @@ Tri stvari koje u vježbi 3 radi ekran, a ne pripadaju njegovoj ulozi prikaza:
 ### Provjera razumijevanja 2
 
 `StatistikaEkran` je trenutačno `StatelessWidget`, pa bi za korištenje `initState` trebalo pretvoriti ga u `StatefulWidget`. Kad bi u tom `initState` stvorio novi `ZadatciViewModel(ZadatakRepozitorij())`, imao bi vlastiti view model i vlastito stanje, odvojeno od onoga na glavnom ekranu. Budući da se podaci u view model učitavaju tek pozivom `ucitaj()`, bez tog poziva statistika bi prikazivala nule. Čak i kad bi se podaci učitali, promjene poput dodavanja ili označavanja zadatka na glavnom ekranu ne bi se odrazile u toj statistici. Zato oba ekrana trebaju koristiti isti `ZadatciViewModel`, koji glavni ekran prosljeđuje statistici.
+
+### Provjera razumijevanja 3
+
+`ZadatciViewModel` izlaže `UnmodifiableListView` kako bi prikaz mogao čitati popis, ali ga ne bi mogao izravno mijenjati. Kad bi izložio običnu promjenjivu listu, ekran ili neki drugi pozivatelj mogao bi dodati ili ukloniti zadatak bez prolaska kroz ViewModel i bez poziva `notifyListeners()`. Tada bi se stanje i statistika mogli promijeniti, a slušatelji ne bi bili obaviješteni pa se ekran ne bi osvježio. 
+
+### Provjera razumijevanja 4
+
+`promijeniZavrsen` i dalje promijeni zadatak u memoriji, ali bez `notifyListeners()` `ListenableBuilder` ne dobije obavijest i ne izgradi se ponovno. Pri isprobavanju se zato stanje kvačice na ekranu nije odmah promijenilo, iako je promjena bila napravljena u ViewModelu. Prikaz statistike također se ne bi osvježio. Ekran bi mogao pokazati novo stanje tek nakon nekog drugog razloga za ponovnu izgradnju. Poziv `notifyListeners()` potreban je da se promjena odmah prikaže.
