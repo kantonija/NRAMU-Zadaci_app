@@ -9,18 +9,18 @@ enum Stanje { ucitavanje, uspjeh, greska }
 
 class ZadatciViewModel extends ChangeNotifier {
   final ZadatakRepozitorij _repo;
-  
+
   ZadatciViewModel(this._repo);
-  
+
   final List<Zadatak> _zadatci = [];
   Stanje _stanje = Stanje.ucitavanje;
   String _poruka = '';
   bool _samoNezavrseni = false;
-  
+
   UnmodifiableListView<Zadatak> get zadatci => UnmodifiableListView(_zadatci);
   UnmodifiableListView<Zadatak> get prikazani => UnmodifiableListView(
-        _samoNezavrseni ? _zadatci.where((z) => !z.zavrsen).toList() : _zadatci,
-      );
+    _samoNezavrseni ? _zadatci.where((z) => !z.zavrsen).toList() : _zadatci,
+  );
   Stanje get stanje => _stanje;
   String get poruka => _poruka;
   bool get samoNezavrseni => _samoNezavrseni;
@@ -29,26 +29,26 @@ class ZadatciViewModel extends ChangeNotifier {
     _samoNezavrseni = vrijednost;
     notifyListeners();
   }
-  
+
   int get ukupno => _zadatci.length;
   int get zavrseno => _zadatci.where((z) => z.zavrsen).length;
   int get preostalo => ukupno - zavrseno;
-  
+
   Future<void> ucitaj() async {
     _stanje = Stanje.ucitavanje;
 
     notifyListeners();
     try {
-    final podaci = await _repo.dohvati();
-    _zadatci
-    ..clear()
-    ..addAll(podaci);
-    _stanje = Stanje.uspjeh;
+      final podaci = await _repo.dohvati();
+      _zadatci
+        ..clear()
+        ..addAll(podaci);
+      _stanje = Stanje.uspjeh;
     } on ZadatciException catch (e) {
-    _poruka = e.poruka;
-    _stanje = Stanje.greska;
+      _poruka = e.poruka;
+      _stanje = Stanje.greska;
     }
-  notifyListeners();
+    notifyListeners();
   }
 
   /// Dodaje zadatak. Vraća false ako naslov nije valjan.
@@ -60,11 +60,12 @@ class ZadatciViewModel extends ChangeNotifier {
     notifyListeners();
     return true;
   }
-  
+
   void promijeniZavrsen(int id) {
     final i = _zadatci.indexWhere((z) => z.id == id);
     if (i == -1) return;
     _zadatci[i] = _zadatci[i].kopiraj(zavrsen: !_zadatci[i].zavrsen);
+    notifyListeners();
   }
 
   void ukloni(int id) {

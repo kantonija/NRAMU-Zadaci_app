@@ -1,2 +1,7 @@
 Analyzing zadatci_app...                                                
 No issues found! (ran in 54.8s)
+
+# Vjezba 04
+
+Analyzing zadatci_app...                                                
+No issues found! (ran in 49.0s)

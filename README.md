@@ -62,3 +62,7 @@ Tri stvari koje u vježbi 3 radi ekran, a ne pripadaju njegovoj ulozi prikaza:
 ### Provjera razumijevanja 4
 
 `promijeniZavrsen` i dalje promijeni zadatak u memoriji, ali bez `notifyListeners()` `ListenableBuilder` ne dobije obavijest i ne izgradi se ponovno. Pri isprobavanju se zato stanje kvačice na ekranu nije odmah promijenilo, iako je promjena bila napravljena u ViewModelu. Prikaz statistike također se ne bi osvježio. Ekran bi mogao pokazati novo stanje tek nakon nekog drugog razloga za ponovnu izgradnju. Poziv `notifyListeners()` potreban je da se promjena odmah prikaže.
+
+### Samostalna izmjena
+
+Dodala sam prekidač za filtriranje popisa tako da mogu prikazati samo nezavršene zadatke. Statistika i dalje računa sve zadatke. Te kada se pomakne zadatak da se ukloni s popisa.

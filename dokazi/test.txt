@@ -1,0 +1,3 @@
+# Vjezba 04
+
+00:06 +6: All tests passed!
