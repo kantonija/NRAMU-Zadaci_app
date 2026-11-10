@@ -50,3 +50,7 @@ Tri stvari koje u vježbi 3 radi ekran, a ne pripadaju njegovoj ulozi prikaza:
 1. Ekran upravlja popisom zadataka i stanjem učitavanja (`_zadaci`, `_ucitavanje`, `_ucitaj` i `_ponovi`). To pripada **ViewModelu**, koji bi izlagao podatke i stanja prikazu.
 2. Obrazac računa novi ID i sastavlja novi `Zadatak` u `_spremi`. To je poslovna logika i pripada **ViewModelu**; prikaz bi samo proslijedio korisnički unos.
 3. Obrazac provjerava pravila naslova u `_provjeriNaslov` (obavezno polje i najmanje tri znaka). Ta pravila pripadaju **ViewModelu** ili zasebnom validatoru u sloju domene, a ne widgetu.
+
+### Provjera razumijevanja 2
+
+`StatistikaEkran` je trenutačno `StatelessWidget`, pa bi za korištenje `initState` trebalo pretvoriti ga u `StatefulWidget`. Kad bi u tom `initState` stvorio novi `ZadatciViewModel(ZadatakRepozitorij())`, imao bi vlastiti view model i vlastito stanje, odvojeno od onoga na glavnom ekranu. Budući da se podaci u view model učitavaju tek pozivom `ucitaj()`, bez tog poziva statistika bi prikazivala nule. Čak i kad bi se podaci učitali, promjene poput dodavanja ili označavanja zadatka na glavnom ekranu ne bi se odrazile u toj statistici. Zato oba ekrana trebaju koristiti isti `ZadatciViewModel`, koji glavni ekran prosljeđuje statistici.
